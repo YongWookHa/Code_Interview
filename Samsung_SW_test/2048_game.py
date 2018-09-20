@@ -12,7 +12,7 @@ maximum = max(max(x) for x in _map)
 directions = ['right', 'left', 'up', 'down', ]
 
 
-def bumpAndSum(li):
+def bumpAndSum(li): # 한 줄을 가져와서 충돌 후 합침.
     s = list()
     result = list()
     for x in li:
@@ -35,21 +35,27 @@ def bumpAndSum(li):
 
 
 def tilt_board(ori_map, direc):
+    def transpose(m):
+        return [[m[i][j] for i in range(N)] for j in range(N)]
+
     crnt_map = deepcopy(ori_map)
     if direc == 'up':
-        temp = [[crnt_map[i][j] for i in range(N)] for j in range(N)] # transpose
+        temp = transpose(crnt_map)
         for i, t in enumerate(temp):
             crnt_map[i] = bumpAndSum(t)
-        crnt_map = [[crnt_map[i][j] for i in range(N)] for j in range(N)]
+        crnt_map = transpose(crnt_map)
+
     if direc == 'down':
-        temp = [[crnt_map[i][j] for i in range(N)] for j in range(N)]
+        temp = transpose(crnt_map)
         for i, t in enumerate(temp):
             li = bumpAndSum(list(reversed(t)))
             crnt_map[i] = list(reversed(li))
-        crnt_map = [[crnt_map[i][j] for i in range(N)] for j in range(N)]
+        crnt_map = transpose(crnt_map)
+
     if direc == 'left':
         for i, t in enumerate(ori_map):
             crnt_map[i] = bumpAndSum(t)
+
     if direc == 'right':
         for i, t in enumerate(ori_map):
             li = bumpAndSum(list(reversed(t)))
@@ -58,7 +64,7 @@ def tilt_board(ori_map, direc):
     return crnt_map
 
 
-def play_game(ori_map, num=1):
+def play_game(ori_map, num=1): # Dynamic programming
     global N, _map, MAX, maximum, directions
     if num > 5:
         return
