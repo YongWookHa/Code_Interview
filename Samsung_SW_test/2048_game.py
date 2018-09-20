@@ -8,14 +8,14 @@ for i in range(N):
     _map.append([int(x) for x in line])
 
 MAX = sum([sum(x) for x in _map])
-maximum = max(max(x) for x in _map)
+maximum = max(max(x) for x in _map) # max element in 2d matrix
 directions = ['right', 'left', 'up', 'down', ]
 
 
 def bumpAndSum(li): # 한 줄을 가져와서 충돌 후 합침.
     s = list()
     result = list()
-    for x in li:
+    for x in li: # size 2 queue 방식
         if x != 0:
             if not s:
                 s.append(x)
@@ -74,7 +74,7 @@ def play_game(ori_map, num=1): # Dynamic programming
         crnt_map = tilt_board(crnt_map, d)
         if crnt_map == ori_map:
             continue
-        temp = max(max(crnt_map, key=lambda a: max(a)))
+        temp = max(max(crnt_map, key=lambda a: max(a))) # max element in 2d matrix
         if temp == MAX:
             maximum = MAX
             return
