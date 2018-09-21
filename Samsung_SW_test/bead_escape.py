@@ -1,7 +1,7 @@
 # Problems from : https://www.acmicpc.net/problem/13460
 # Samsung SW 역량 테스트
 
-from copy import deepcopy
+from copy import copy
 
 ################## get input ##################
 inp = input()
@@ -25,8 +25,10 @@ possibilities = ['up', 'down', 'right', 'left']
 oppo_direc = {'up': 'down', 'down': 'up', 'right': 'left', 'left': 'right'}
 minimum = 11
 
+def deepcopy(li):
+    return [copy(x) for x in li]
 
-def radar(crnt_map, direc, ball): # crnt_map 에서 ball을 기준으로 direc 방향에 어떤 물체가 있는지 판별
+def radar(crnt_map, direc, ball):
     x = ball[0]
     y = ball[1]
     if direc == 'up':
@@ -39,11 +41,11 @@ def radar(crnt_map, direc, ball): # crnt_map 에서 ball을 기준으로 direc �
         return [crnt_map[x][y + i] for i in range(1, col - y - 1)]
 
 
-def move_ball(_map, direc, ball, ball_name): # crnt_map에서 ball을 direc 방향으로 움직여서 수정된 map과 ball의 위치 출력
+def move_ball(_map, direc, ball, ball_name):
     crnt_map = _map
     x = ball[0]
     y = ball[1]
-    if x * y == 0: # ball이 구멍을 통과했을경우 (0,0)으로 매핑 됨.
+    if x * y == 0:
         return crnt_map, ball
     if direc == 'up':
         crnt_map[x][y] = '.'
@@ -67,7 +69,7 @@ def move_ball(_map, direc, ball, ball_name): # crnt_map에서 ball을 direc 방�
     return crnt_map, ball
 
 
-def tilt_board(_map, direc, r, b, _result=False): # Board를 기울여서 ball들을 움직임.
+def tilt_board(_map, direc, r, b, _result=False):
     red_O, blue_O, result = False, False, _result
     crnt_map, red, blue = deepcopy(_map), r, b
     path_red = radar(crnt_map, direc, r)
@@ -92,19 +94,21 @@ def tilt_board(_map, direc, r, b, _result=False): # Board를 기울여서 ball�
     if red_O is True and blue_O is False:
         result = True
 
-    if _map != crnt_map: # Board(map)의 ball이 더이상 움직이지 않을 때까지 (red ball과 blue ball이 순차적으로 움직이기 때문)
+    if _map != crnt_map:
         return tilt_board(crnt_map, direc, red, blue, result)
     else:
         return crnt_map, red, blue, result
 
 
-def play_game(_map, red, blue, num=1, prev_direc=None): #tilt_board를 counting, dynamic programming, DFS
+def play_game(_map, red, blue, num=1, prev_direc=None):
     global minimum, oppo_direc, possibilities
     original_map = deepcopy(_map)
     if num > 10:
+        # print('')
         return
+        # print(prev_direc, red, blue, ' | ', end='')
     direc = deepcopy(possibilities)
-    if prev_direc: # 이전에 움직였던 방향과 수직된 방향으로만 움직임
+    if prev_direc:
         try:
             direc.remove(oppo_direc[prev_direc])
             direc.remove(prev_direc)
