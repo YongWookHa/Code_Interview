@@ -1,4 +1,7 @@
-from copy import deepcopy
+# Problems from : https://www.acmicpc.net/problem/12100
+# Samsung SW 역량 테스트
+
+from copy import copy
 
 ###########get input##############
 N = int(input())
@@ -11,6 +14,8 @@ MAX = sum([sum(x) for x in _map])
 maximum = max(max(x) for x in _map) # max element in 2d matrix
 directions = ['right', 'left', 'up', 'down', ]
 
+def deepcopy(li):
+    return [copy(x) for x in li]
 
 def bumpAndSum(li): # 한 줄을 가져와서 충돌 후 합침.
     s = list()
