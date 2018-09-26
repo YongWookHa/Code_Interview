@@ -14,7 +14,6 @@ for _ in range(N):
 
 inp = input().split(' ')[:K]
 _order = [int(x) for x in inp]  # 1:동 2:서 3:북 4:남
-
 ############################################
 
 class rolling_dice():
@@ -65,7 +64,6 @@ class rolling_dice():
             else:
                 self.set_val(0, x, y)
                 temp += [self.dice[0][1], self.dice[0][2], self.dice[0][3], bottom]
-
             self.dice[0] = temp
             self.dice[1][1], self.dice[1][3] = self.dice[0][1], self.dice[0][3]  # sync 윗, 밑
 
