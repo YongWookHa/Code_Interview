@@ -9,10 +9,10 @@ def get_input():
         _map.append([int(x) for x in input().split(' ')[:N[1]]])
     return N[0], N[1], _map
 
-
 def spreadAndCount(_map):
+
     def count_safe(_map):
-        count = (len(_map))*(len(_map[0]))
+        count = (len(_map)) * (len(_map[0]))
         for row in _map:
             count = count - row.count(1) - row.count(2)
         return count
@@ -20,20 +20,31 @@ def spreadAndCount(_map):
     result = [x[:] for x in _map]
     N = len(_map)
     M = len(_map[0])
+
+    queue = list()
+    for i in range(1, N - 1):
+        for j in range(1, M - 1):
+            if result[i][j] == 2:
+                queue.append((i,j))
+
     while(True):
-        temp = [x[:] for x in result]
-        for i in range(1, N-1):
-            for j in range(1, M-1):
-                if result[i][j] is 2:
-                    if result[i-1][j] is not 1:
-                        result[i - 1][j] = 2
-                    if result[i+1][j] is not 1:
-                        result[i + 1][j] = 2
-                    if result[i][j-1] is not 1:
-                        result[i][j-1] = 2
-                    if result[i][j+1] is not 1:
-                        result[i][j+1] = 2
-        if temp == result:
+        new_queue = []
+        for i, x in enumerate(queue):
+            i, j = x[0], x[1]
+            if result[i-1][j] not in (1, 2):
+                result[i - 1][j] = 2
+                new_queue.append((i-1,j))
+            if result[i+1][j] not in (1, 2):
+                result[i + 1][j] = 2
+                new_queue.append((i+1,j))
+            if result[i][j-1] not in (1, 2):
+                result[i][j-1] = 2
+                new_queue.append((i,j-1))
+            if result[i][j+1] not in (1, 2):
+                result[i][j+1] = 2
+                new_queue.append((i,j+1))
+        queue = new_queue
+        if not queue:
             return count_safe(result)
 
 
